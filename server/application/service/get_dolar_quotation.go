@@ -47,7 +47,7 @@ func (s *GetDolarQuotationService) Execute(w http.ResponseWriter, r *http.Reques
 }
 
 func makeQuotationRequest() (*dto.QuotationDto, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*300)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*200)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, "GET", "https://economia.awesomeapi.com.br/json/last/USD-BRL", nil)

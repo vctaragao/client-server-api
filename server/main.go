@@ -19,6 +19,6 @@ func main() {
 
 	http.HandleFunc("/cotacao", getDolarQuotation.Execute)
 
-	fmt.Println("Server listening on: localhost:8080")
+	fmt.Println("Server listening on: localhost:8080/cotacao")
 	http.ListenAndServe(":8080", nil)
 }
