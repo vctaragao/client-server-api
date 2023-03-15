@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
+
+	_ "modernc.org/sqlite"
 )
 
 type Sqlite struct {
@@ -12,11 +14,10 @@ type Sqlite struct {
 }
 
 func NewSqlite() (*Sqlite, error) {
-	db, err := sql.Open("sqlite3", "quotation.db")
+	db, err := sql.Open("sqlite", "../quotation.db")
 	if err != nil {
 		return &Sqlite{}, fmt.Errorf("error opening database: %v", err)
 	}
-	defer db.Close()
 
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS quotation (id INTEGER PRIMARY KEY, value DECIMAL(5,15))")
 	if err != nil {
@@ -28,7 +29,7 @@ func NewSqlite() (*Sqlite, error) {
 	}, nil
 }
 
-func (s *Sqlite) AddQuotation() (int64, error) {
+func (s *Sqlite) AddQuotation(value float64) (int64, error) {
 	stmt, err := s.Db.Prepare("INSERT INTO quotation(value) VALUES (?)")
 	if err != nil {
 		return 0, fmt.Errorf("error inserting data: %v", err)
@@ -37,7 +38,7 @@ func (s *Sqlite) AddQuotation() (int64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*10)
 	defer cancel()
 
-	res, err := stmt.ExecContext(ctx)
+	res, err := stmt.ExecContext(ctx, value)
 	if err != nil {
 		return 0, fmt.Errorf("error inserting data: %v", err)
 	}
