@@ -77,9 +77,9 @@ func saveQuotation(dto *QuotationDto) error {
 		panic(err)
 	}
 
-	err = os.WriteFile(dir+"/context.txt", []byte(fmt.Sprintf("Dolar: %.5f", dto.Dolar)), 0644)
+	err = os.WriteFile(dir+"/cotacao.txt", []byte(fmt.Sprintf("Dolar: %.5f", dto.Dolar)), 0644)
 	if err != nil {
-		return fmt.Errorf("unable to write to context file: %v", err)
+		return fmt.Errorf("unable to write to cotacao file: %v", err)
 	}
 
 	return nil
